@@ -5,10 +5,20 @@ class TicketsController < ApplicationController
 										  :update,
 										  :destroy]
 
-	def show
-										  
+	def update
+		if @ticket.update_attributes(params[:ticket])
+			flash[:notice] = "Ticket has been updated."
+			redirect_to [@project, @ticket]
+		else
+			flash[:alert] = "Ticket has not been updated."
+			render :action => "edit"
+		end
+	end
+
+ 	def edit
+ 		
  	end
- 										  
+
 	def new
 		@tickets = @project.tickets.build
 		
@@ -28,6 +38,13 @@ class TicketsController < ApplicationController
 
 	def show
 	end	
+
+	def destroy 
+		@ticket.destroy
+		flash[:notice] = "Ticket has been deleted"
+		redirect_to @project
+		
+	end
 
 	private
 		def find_project
